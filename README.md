@@ -14,7 +14,6 @@
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=scrumno_frontend-project-11&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=scrumno_frontend-project-11)
 
-> Бейдж заработает после привязки репозитория к [SonarCloud](https://sonarcloud.io): создайте проект, добавьте секрет `SONAR_TOKEN` в настройках GitHub-репозитория и при необходимости поправьте `sonar.projectKey` и `sonar.organization` в `sonar-project.properties`.
 
 ## Локальный запуск
 
