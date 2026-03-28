@@ -21,6 +21,8 @@ export const mergeFeedAndPosts = (state, url, parsed) => {
       feedId,
       title: item.title,
       link: item.link,
+      description: item.description ?? '',
+      read: false,
     };
     state.posts.allIds.push(postId);
   });

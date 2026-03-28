@@ -51,6 +51,43 @@ const mountApp = () => {
         <div id="posts-list" class="list-group shadow-sm"></div>
       </div>
     </div>
+    <div
+      class="modal fade"
+      id="post-preview-modal"
+      tabindex="-1"
+      aria-labelledby="post-preview-modal-label"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="post-preview-modal-label"></h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p class="mb-0 post-preview-body text-body-secondary"></p>
+          </div>
+          <div class="modal-footer">
+            <a
+              class="btn btn-primary post-preview-read-full"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+            >${t('posts.readFull')}</a>
+            <button
+              type="button"
+              class="btn btn-secondary post-preview-close"
+              data-bs-dismiss="modal"
+            >${t('posts.close')}</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 `;
 

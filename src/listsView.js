@@ -1,3 +1,5 @@
+import { Modal } from 'bootstrap';
+import i18next from 'i18next';
 import { subscribe } from 'valtio/vanilla';
 
 const clear = (node) => {
@@ -28,22 +30,64 @@ const renderPosts = (state, root) => {
   clear(root);
   state.posts.allIds.forEach((id) => {
     const p = state.posts.byId[id];
-    const link = document.createElement('a');
-    link.className = 'list-group-item list-group-item-action';
-    link.href = p.link;
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-    link.textContent = p.title;
-    root.append(link);
+    const row = document.createElement('div');
+    row.className =
+      'list-group-item d-flex justify-content-between align-items-center gap-2 flex-wrap';
+
+    const title = document.createElement('span');
+    title.className = p.read
+      ? 'fw-normal post-title flex-grow-1'
+      : 'fw-bold post-title flex-grow-1';
+    title.textContent = p.title;
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn btn-sm btn-outline-primary flex-shrink-0';
+    btn.textContent = i18next.t('posts.preview');
+    btn.dataset.postPreview = id;
+
+    row.append(title, btn);
+    root.append(row);
   });
 };
 
+const syncPreviewModalChrome = (modalEl) => {
+  const readFull = modalEl.querySelector('.post-preview-read-full');
+  const closeBtn = modalEl.querySelector('.post-preview-close');
+  if (readFull) readFull.textContent = i18next.t('posts.readFull');
+  if (closeBtn) closeBtn.textContent = i18next.t('posts.close');
+};
+
 export const initListsView = (state, { feedsRoot, postsRoot }) => {
+  const modalEl = document.getElementById('post-preview-modal');
+  const modalTitle = modalEl.querySelector('.modal-title');
+  const modalBody = modalEl.querySelector('.post-preview-body');
+  const readFull = modalEl.querySelector('.post-preview-read-full');
+
+  const bsModal = new Modal(modalEl);
+
+  postsRoot.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-post-preview]');
+    if (!btn) return;
+    const postId = btn.dataset.postPreview;
+    const post = state.posts.byId[postId];
+    if (!post) return;
+
+    post.read = true;
+    modalTitle.textContent = post.title;
+    modalBody.textContent = post.description || '';
+    readFull.href = post.link;
+
+    bsModal.show();
+  });
+
   const render = () => {
     renderFeeds(state, feedsRoot);
     renderPosts(state, postsRoot);
+    syncPreviewModalChrome(modalEl);
   };
 
   subscribe(state, render);
+  i18next.on('languageChanged', render);
   render();
 };

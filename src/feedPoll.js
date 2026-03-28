@@ -35,6 +35,8 @@ export const mergePollIntoState = (state, feedId, parsed) => {
       feedId,
       title: item.title,
       link: item.link,
+      description: item.description ?? '',
+      read: false,
     };
     state.posts.allIds.push(postId);
   });
