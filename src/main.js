@@ -4,6 +4,7 @@ import i18next from 'i18next';
 import { ValidationError } from 'yup';
 
 import { AppError } from './errors.js';
+import { startFeedPolling } from './feedPoll.js';
 import { initI18n } from './i18n.js';
 import { initListsView } from './listsView.js';
 import { mergeFeedAndPosts } from './mergeFeed.js';
@@ -73,6 +74,7 @@ const mountApp = () => {
 
   initFormView(state, { input, feedback, submitBtn, loadAlert, form });
   initListsView(state, { feedsRoot, postsRoot });
+  startFeedPolling(state);
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
