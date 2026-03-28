@@ -35,7 +35,7 @@ export const initFormView = (state, { input, feedback, submitBtn, form }) => {
     feedback.className = 'feedback mb-2'
   }
 
-  const syncLoading = (loading) => {
+  const syncLoading = loading => {
     submitBtn.disabled = loading
     input.disabled = loading
     form.setAttribute('aria-busy', loading ? 'true' : 'false')

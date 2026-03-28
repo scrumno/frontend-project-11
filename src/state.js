@@ -1,7 +1,7 @@
 import { proxy } from 'valtio/vanilla'
 
-export const getRegisteredFeedUrls = (state) =>
-  state.feeds.allIds.map((id) => state.feeds.byId[id].url)
+export const getRegisteredFeedUrls = state =>
+  state.feeds.allIds.map(id => state.feeds.byId[id].url)
 
 export const createState = () =>
   proxy({

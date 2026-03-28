@@ -1,8 +1,8 @@
 import * as yup from 'yup'
 
-const trim = (value) => value.trim()
+const trim = value => value.trim()
 
-const buildSchema = (feeds) =>
+const buildSchema = feeds =>
   yup
     .string()
     .required()
@@ -10,13 +10,13 @@ const buildSchema = (feeds) =>
     .test(
       'no-duplicate',
       'validation.duplicate',
-      (value) =>
-        new Promise((resolve) => {
+      value =>
+        new Promise(resolve => {
           resolve(!feeds.includes(value))
         }),
     )
 
-const validateWithFeeds = (feeds) => (value) => buildSchema(feeds).validate(value)
+const validateWithFeeds = feeds => value => buildSchema(feeds).validate(value)
 
 /**
  * Пайплайн: обрезка → асинхронная валидация yup (сообщения — ключи для i18next).

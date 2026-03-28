@@ -7,7 +7,7 @@ import { AppError } from './errors.js'
  * @param {string} feedUrl
  * @returns {string}
  */
-const buildProxyUrl = (feedUrl) => {
+const buildProxyUrl = feedUrl => {
   const u = new URL('https://allorigins.hexlet.app/get')
   u.searchParams.set('disableCache', 'true')
   u.searchParams.set('url', feedUrl)
@@ -19,20 +19,20 @@ const buildProxyUrl = (feedUrl) => {
  * @param {string} feedUrl
  * @returns {Promise<string>}
  */
-export const fetchRssXml = (feedUrl) => {
+export const fetchRssXml = feedUrl => {
   const url = buildProxyUrl(feedUrl)
   return axios
     .get(url, {
       timeout: 20000,
     })
-    .then((response) => {
+    .then(response => {
       const contents = response.data?.contents
       if (typeof contents !== 'string') {
         throw new AppError('errors.invalidRss')
       }
       return contents
     })
-    .catch((err) => {
+    .catch(err => {
       if (err instanceof AppError) {
         throw err
       }

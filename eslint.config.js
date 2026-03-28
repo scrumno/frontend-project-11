@@ -19,6 +19,8 @@ export default [
     rules: {
       'no-console': 'off',
       '@stylistic/semi': ['error', 'never'],
+      '@stylistic/arrow-parens': ['error', 'as-needed'],
+      '@stylistic/operator-linebreak': ['error', 'before'],
     },
   },
 ]

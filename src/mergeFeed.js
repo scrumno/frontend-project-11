@@ -13,7 +13,7 @@ export const mergeFeedAndPosts = (state, url, parsed) => {
   }
   state.feeds.allIds.push(feedId)
 
-  parsed.items.forEach((item) => {
+  parsed.items.forEach(item => {
     const postId = `post-${state.counters.post}`
     state.counters.post += 1
     state.posts.byId[postId] = {

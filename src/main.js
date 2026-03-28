@@ -14,7 +14,7 @@ import { initFormView } from './view.js'
 
 const mountApp = () => {
   const app = document.querySelector('#app')
-  const t = (key) => i18next.t(key)
+  const t = key => i18next.t(key)
 
   app.innerHTML = `
   <div class="container py-5">
@@ -112,7 +112,7 @@ const mountApp = () => {
   initListsView(state, { feedsRoot, postsRoot })
   startFeedPolling(state)
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', e => {
     e.preventDefault()
     state.form.errorKey = null
     state.ui.loadErrorKey = null
@@ -127,7 +127,7 @@ const mountApp = () => {
         input.value = ''
         input.focus()
       })
-      .catch((err) => {
+      .catch(err => {
         state.ui.successKey = null
         if (err instanceof ValidationError) {
           const [key] = err.errors

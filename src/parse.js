@@ -1,8 +1,8 @@
 import { AppError } from './errors.js'
 
-const textOf = (el) => (el?.textContent ?? '').trim()
+const textOf = el => (el?.textContent ?? '').trim()
 
-const itemDescriptionFromRss = (item) => {
+const itemDescriptionFromRss = item => {
   const direct = item.querySelector(':scope > description')
   if (direct) return textOf(direct)
 
@@ -10,8 +10,8 @@ const itemDescriptionFromRss = (item) => {
   for (let i = 0; i < elements.length; i += 1) {
     const el = elements[i]
     if (
-      el.localName === 'encoded' &&
-      (el.namespaceURI || '').includes('purl.org/rss/1.0/modules/content')
+      el.localName === 'encoded'
+      && (el.namespaceURI || '').includes('purl.org/rss/1.0/modules/content')
     ) {
       return textOf(el)
     }
@@ -19,16 +19,16 @@ const itemDescriptionFromRss = (item) => {
   return ''
 }
 
-const itemDescriptionFromAtom = (entry) => {
+const itemDescriptionFromAtom = entry => {
   const summary = textOf(entry.querySelector(':scope > summary'))
   if (summary) return summary
   return textOf(entry.querySelector(':scope > content'))
 }
 
-const parseRssChannel = (channel) => {
+const parseRssChannel = channel => {
   const title = textOf(channel.querySelector(':scope > title'))
   const description = textOf(channel.querySelector(':scope > description'))
-  const items = [...channel.querySelectorAll(':scope > item')].map((item) => {
+  const items = [...channel.querySelectorAll(':scope > item')].map(item => {
     const itemTitle = textOf(item.querySelector('title'))
     const linkEl = item.querySelector('link')
     const link = linkEl ? textOf(linkEl) : ''
@@ -42,17 +42,17 @@ const parseRssChannel = (channel) => {
   return {
     title: title || '—',
     description,
-    items: items.filter((i) => i.link),
+    items: items.filter(i => i.link),
   }
 }
 
-const parseAtomFeed = (feed) => {
+const parseAtomFeed = feed => {
   const title = textOf(feed.querySelector(':scope > title'))
   const subtitle = textOf(feed.querySelector(':scope > subtitle'))
-  const entries = [...feed.querySelectorAll(':scope > entry')].map((entry) => {
+  const entries = [...feed.querySelectorAll(':scope > entry')].map(entry => {
     const entryTitle = textOf(entry.querySelector('title'))
-    const linkEl =
-      entry.querySelector('link[rel="alternate"]') || entry.querySelector('link')
+    const linkEl
+      = entry.querySelector('link[rel="alternate"]') || entry.querySelector('link')
     const link = linkEl?.getAttribute('href')?.trim() ?? ''
     return {
       title: entryTitle || link || '—',
@@ -64,7 +64,7 @@ const parseAtomFeed = (feed) => {
   return {
     title: title || '—',
     description: subtitle,
-    items: entries.filter((i) => i.link),
+    items: entries.filter(i => i.link),
   }
 }
 
@@ -73,7 +73,7 @@ const parseAtomFeed = (feed) => {
  * @param {string} xmlString
  * @returns {{ title: string, description: string, items: { title: string, link: string, description: string }[] }}
  */
-export const parseRssXml = (xmlString) => {
+export const parseRssXml = xmlString => {
   if (typeof xmlString !== 'string' || !xmlString.trim()) {
     throw new AppError('errors.invalidRss')
   }
