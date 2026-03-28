@@ -30,6 +30,7 @@ const mountApp = () => {
                 class="form-control form-control-lg"
                 id="rss-url"
                 name="url"
+                aria-label="url"
                 placeholder="${t('form.placeholder')}"
                 autocomplete="off"
                 spellcheck="false"
