@@ -5,11 +5,11 @@ const trim = (value) => value.trim();
 const buildSchema = (feeds) =>
   yup
     .string()
-    .required('Не должно быть пустым')
-    .url('Ссылка должна быть валидным URL')
+    .required()
+    .url()
     .test(
       'no-duplicate',
-      'RSS уже существует',
+      'validation.duplicate',
       (value) =>
         new Promise((resolve) => {
           resolve(!feeds.includes(value));
@@ -19,7 +19,7 @@ const buildSchema = (feeds) =>
 const validateWithFeeds = (feeds) => (value) => buildSchema(feeds).validate(value);
 
 /**
- * Пайплайн: обрезка → асинхронная валидация yup (в т.ч. дубликаты).
+ * Пайплайн: обрезка → асинхронная валидация yup (сообщения — ключи для i18next).
  * @param {string[]} feeds
  * @param {string} rawInput
  * @returns {Promise<string>}

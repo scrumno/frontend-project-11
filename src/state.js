@@ -4,6 +4,7 @@ export const createState = () =>
   proxy({
     feeds: [],
     form: {
-      error: null,
+      /** @type {string | null} i18n-ключ ошибки yup (не локализованная строка) */
+      errorKey: null,
     },
   });
