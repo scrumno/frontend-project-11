@@ -1,20 +1,20 @@
-import './style.css';
+import './style.css'
 
-import i18next from 'i18next';
-import { ValidationError } from 'yup';
+import i18next from 'i18next'
+import { ValidationError } from 'yup'
 
-import { AppError } from './errors.js';
-import { startFeedPolling } from './feedPoll.js';
-import { initI18n } from './i18n.js';
-import { initListsView } from './listsView.js';
-import { mergeFeedAndPosts } from './mergeFeed.js';
-import { loadFeedPayload } from './rssFlow.js';
-import { createState, getRegisteredFeedUrls } from './state.js';
-import { initFormView } from './view.js';
+import { AppError } from './errors.js'
+import { startFeedPolling } from './feedPoll.js'
+import { initI18n } from './i18n.js'
+import { initListsView } from './listsView.js'
+import { mergeFeedAndPosts } from './mergeFeed.js'
+import { loadFeedPayload } from './rssFlow.js'
+import { createState, getRegisteredFeedUrls } from './state.js'
+import { initFormView } from './view.js'
 
 const mountApp = () => {
-  const app = document.querySelector('#app');
-  const t = (key) => i18next.t(key);
+  const app = document.querySelector('#app')
+  const t = (key) => i18next.t(key)
 
   app.innerHTML = `
   <div class="container py-5">
@@ -87,65 +87,65 @@ const mountApp = () => {
       </div>
     </div>
   </div>
-`;
+`
 
   const refreshStaticTexts = () => {
-    app.querySelector('[data-i18n="header"]').textContent = t('header');
-    app.querySelector('[data-i18n="form.rssUrlLabel"]').textContent = t('form.rssUrlLabel');
-    app.querySelector('[data-i18n="form.addButton"]').textContent = t('form.addButton');
-    app.querySelector('#rss-url').placeholder = t('form.placeholder');
-    const modalCloseX = app.querySelector('#modal .modal-header .btn-close');
-    if (modalCloseX) modalCloseX.setAttribute('aria-label', t('posts.close'));
-  };
+    app.querySelector('[data-i18n="header"]').textContent = t('header')
+    app.querySelector('[data-i18n="form.rssUrlLabel"]').textContent = t('form.rssUrlLabel')
+    app.querySelector('[data-i18n="form.addButton"]').textContent = t('form.addButton')
+    app.querySelector('#rss-url').placeholder = t('form.placeholder')
+    const modalCloseX = app.querySelector('#modal .modal-header .btn-close')
+    if (modalCloseX) modalCloseX.setAttribute('aria-label', t('posts.close'))
+  }
 
-  i18next.on('languageChanged', refreshStaticTexts);
+  i18next.on('languageChanged', refreshStaticTexts)
 
-  const state = createState();
-  const form = document.querySelector('#rss-form');
-  const input = document.querySelector('#rss-url');
-  const feedback = document.querySelector('#rss-feedback-banner');
-  const submitBtn = document.querySelector('#rss-submit');
-  const feedsRoot = document.querySelector('#feeds-list');
-  const postsRoot = document.querySelector('#posts-list');
+  const state = createState()
+  const form = document.querySelector('#rss-form')
+  const input = document.querySelector('#rss-url')
+  const feedback = document.querySelector('#rss-feedback-banner')
+  const submitBtn = document.querySelector('#rss-submit')
+  const feedsRoot = document.querySelector('#feeds-list')
+  const postsRoot = document.querySelector('#posts-list')
 
-  initFormView(state, { input, feedback, submitBtn, form });
-  initListsView(state, { feedsRoot, postsRoot });
-  startFeedPolling(state);
+  initFormView(state, { input, feedback, submitBtn, form })
+  initListsView(state, { feedsRoot, postsRoot })
+  startFeedPolling(state)
 
   form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    state.form.errorKey = null;
-    state.ui.loadErrorKey = null;
-    state.ui.successKey = null;
-    state.ui.loading = true;
+    e.preventDefault()
+    state.form.errorKey = null
+    state.ui.loadErrorKey = null
+    state.ui.successKey = null
+    state.ui.loading = true
 
     loadFeedPayload(getRegisteredFeedUrls(state), input.value)
       .then(({ url, parsed }) => {
-        mergeFeedAndPosts(state, url, parsed);
-        state.ui.loadErrorKey = null;
-        state.ui.successKey = 'success.rssLoaded';
-        input.value = '';
-        input.focus();
+        mergeFeedAndPosts(state, url, parsed)
+        state.ui.loadErrorKey = null
+        state.ui.successKey = 'success.rssLoaded'
+        input.value = ''
+        input.focus()
       })
       .catch((err) => {
-        state.ui.successKey = null;
+        state.ui.successKey = null
         if (err instanceof ValidationError) {
-          const [key] = err.errors;
-          state.form.errorKey = key;
-          return;
+          const [key] = err.errors
+          state.form.errorKey = key
+          return
         }
         if (err instanceof AppError) {
-          state.ui.loadErrorKey = err.key;
-          return;
+          state.ui.loadErrorKey = err.key
+          return
         }
-        throw err;
+        throw err
       })
       .finally(() => {
-        state.ui.loading = false;
-      });
-  });
-};
+        state.ui.loading = false
+      })
+  })
+}
 
 initI18n().then(() => {
-  mountApp();
-});
+  mountApp()
+})

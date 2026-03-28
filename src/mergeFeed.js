@@ -2,20 +2,20 @@
  * Нормализованное добавление фида и его постов в состояние.
  */
 export const mergeFeedAndPosts = (state, url, parsed) => {
-  const feedId = `feed-${state.counters.feed}`;
-  state.counters.feed += 1;
+  const feedId = `feed-${state.counters.feed}`
+  state.counters.feed += 1
 
   state.feeds.byId[feedId] = {
     id: feedId,
     url,
     title: parsed.title,
     description: parsed.description,
-  };
-  state.feeds.allIds.push(feedId);
+  }
+  state.feeds.allIds.push(feedId)
 
   parsed.items.forEach((item) => {
-    const postId = `post-${state.counters.post}`;
-    state.counters.post += 1;
+    const postId = `post-${state.counters.post}`
+    state.counters.post += 1
     state.posts.byId[postId] = {
       id: postId,
       feedId,
@@ -23,7 +23,7 @@ export const mergeFeedAndPosts = (state, url, parsed) => {
       link: item.link,
       description: item.description ?? '',
       read: false,
-    };
-    state.posts.allIds.push(postId);
-  });
-};
+    }
+    state.posts.allIds.push(postId)
+  })
+}

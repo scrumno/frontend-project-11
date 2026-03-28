@@ -1,6 +1,6 @@
-import * as yup from 'yup';
+import * as yup from 'yup'
 
-const trim = (value) => value.trim();
+const trim = (value) => value.trim()
 
 const buildSchema = (feeds) =>
   yup
@@ -12,11 +12,11 @@ const buildSchema = (feeds) =>
       'validation.duplicate',
       (value) =>
         new Promise((resolve) => {
-          resolve(!feeds.includes(value));
+          resolve(!feeds.includes(value))
         }),
-    );
+    )
 
-const validateWithFeeds = (feeds) => (value) => buildSchema(feeds).validate(value);
+const validateWithFeeds = (feeds) => (value) => buildSchema(feeds).validate(value)
 
 /**
  * Пайплайн: обрезка → асинхронная валидация yup (сообщения — ключи для i18next).
@@ -25,4 +25,4 @@ const validateWithFeeds = (feeds) => (value) => buildSchema(feeds).validate(valu
  * @returns {Promise<string>}
  */
 export const validateRssUrl = (feeds, rawInput) =>
-  Promise.resolve(rawInput).then(trim).then(validateWithFeeds(feeds));
+  Promise.resolve(rawInput).then(trim).then(validateWithFeeds(feeds))

@@ -1,7 +1,7 @@
-import { proxy } from 'valtio/vanilla';
+import { proxy } from 'valtio/vanilla'
 
 export const getRegisteredFeedUrls = (state) =>
-  state.feeds.allIds.map((id) => state.feeds.byId[id].url);
+  state.feeds.allIds.map((id) => state.feeds.byId[id].url)
 
 export const createState = () =>
   proxy({
@@ -28,4 +28,4 @@ export const createState = () =>
       /** @type {string | null} i18n-ключ ошибки yup */
       errorKey: null,
     },
-  });
+  })
