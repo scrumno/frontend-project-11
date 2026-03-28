@@ -54,8 +54,23 @@ const renderPosts = (state, root) => {
 const syncPreviewModalChrome = (modalEl) => {
   const readFull = modalEl.querySelector('.post-preview-read-full');
   const closeBtn = modalEl.querySelector('.post-preview-close');
+  const headerClose = modalEl.querySelector('.modal-header .btn-close');
   if (readFull) readFull.textContent = i18next.t('posts.readFull');
   if (closeBtn) closeBtn.textContent = i18next.t('posts.close');
+  if (headerClose) headerClose.setAttribute('aria-label', i18next.t('posts.close'));
+};
+
+const fillPreviewBody = (container, text) => {
+  container.replaceChildren();
+  const raw = (text || '').trim();
+  if (!raw) return;
+  const parts = raw.split(/\n\n+/);
+  parts.forEach((chunk, i) => {
+    const p = document.createElement('p');
+    p.className = i === parts.length - 1 ? 'mb-0' : 'mb-2';
+    p.textContent = chunk.trim();
+    container.append(p);
+  });
 };
 
 export const initListsView = (state, { feedsRoot, postsRoot }) => {
@@ -75,7 +90,7 @@ export const initListsView = (state, { feedsRoot, postsRoot }) => {
 
     post.read = true;
     modalTitle.textContent = post.title;
-    modalBody.textContent = post.description || '';
+    fillPreviewBody(modalBody, post.description || '');
     readFull.href = post.link;
 
     bsModal.show();

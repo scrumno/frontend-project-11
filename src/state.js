@@ -21,6 +21,8 @@ export const createState = () =>
       loading: false,
       /** @type {string | null} */
       loadErrorKey: null,
+      /** @type {string | null} i18n-ключ успешной загрузки RSS */
+      successKey: null,
     },
     form: {
       /** @type {string | null} i18n-ключ ошибки yup */

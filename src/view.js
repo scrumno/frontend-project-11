@@ -11,10 +11,20 @@ const syncLoadAlert = (loadErrorEl, key) => {
   }
 };
 
+const syncSuccessAlert = (successEl, key) => {
+  if (key) {
+    successEl.classList.remove('d-none');
+    successEl.textContent = i18next.t(key);
+  } else {
+    successEl.classList.add('d-none');
+    successEl.textContent = '';
+  }
+};
+
 /**
  * Слой View: валидация формы, ошибки загрузки/парсинга, блокировка при запросе.
  */
-export const initFormView = (state, { input, feedback, submitBtn, loadAlert, form }) => {
+export const initFormView = (state, { input, feedback, submitBtn, loadAlert, successAlert, form }) => {
   const syncValidation = (errorKey) => {
     if (errorKey) {
       input.classList.add('is-invalid');
@@ -33,15 +43,18 @@ export const initFormView = (state, { input, feedback, submitBtn, loadAlert, for
 
   subscribeKey(state.form, 'errorKey', syncValidation);
   subscribeKey(state.ui, 'loadErrorKey', (key) => syncLoadAlert(loadAlert, key));
+  subscribeKey(state.ui, 'successKey', (key) => syncSuccessAlert(successAlert, key));
   subscribeKey(state.ui, 'loading', syncLoading);
 
   syncValidation(state.form.errorKey);
   syncLoadAlert(loadAlert, state.ui.loadErrorKey);
+  syncSuccessAlert(successAlert, state.ui.successKey);
   syncLoading(state.ui.loading);
 
   const onLang = () => {
     syncValidation(state.form.errorKey);
     syncLoadAlert(loadAlert, state.ui.loadErrorKey);
+    syncSuccessAlert(successAlert, state.ui.successKey);
   };
   i18next.on('languageChanged', onLang);
 };

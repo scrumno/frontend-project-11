@@ -19,6 +19,7 @@ export const initI18n = () =>
     .init({
       lng: 'ru',
       fallbackLng: 'ru',
+      supportedLngs: ['ru'],
       resources: {
         ru: { translation: ru },
       },

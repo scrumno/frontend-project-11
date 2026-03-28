@@ -37,6 +37,7 @@ const mountApp = () => {
               />
               <div id="rss-url-feedback" class="invalid-feedback" role="alert"></div>
             </div>
+            <div id="rss-success-alert" class="alert alert-success d-none mb-3" role="status"></div>
             <div id="rss-load-alert" class="alert alert-danger d-none mb-3" role="alert"></div>
             <button type="submit" class="btn btn-primary btn-lg w-100" id="rss-submit" data-i18n="form.addButton">${t('form.addButton')}</button>
           </div>
@@ -66,12 +67,10 @@ const mountApp = () => {
               type="button"
               class="btn-close"
               data-bs-dismiss="modal"
-              aria-label="Close"
+              aria-label="${t('posts.close')}"
             ></button>
           </div>
-          <div class="modal-body">
-            <p class="mb-0 post-preview-body text-body-secondary"></p>
-          </div>
+          <div class="modal-body post-preview-body text-body-secondary"></div>
           <div class="modal-footer">
             <a
               class="btn btn-primary post-preview-read-full"
@@ -96,6 +95,8 @@ const mountApp = () => {
     app.querySelector('[data-i18n="form.rssUrlLabel"]').textContent = t('form.rssUrlLabel');
     app.querySelector('[data-i18n="form.addButton"]').textContent = t('form.addButton');
     app.querySelector('#rss-url').placeholder = t('form.placeholder');
+    const modalCloseX = app.querySelector('#post-preview-modal .modal-header .btn-close');
+    if (modalCloseX) modalCloseX.setAttribute('aria-label', t('posts.close'));
   };
 
   i18next.on('languageChanged', refreshStaticTexts);
@@ -106,10 +107,11 @@ const mountApp = () => {
   const feedback = document.querySelector('#rss-url-feedback');
   const submitBtn = document.querySelector('#rss-submit');
   const loadAlert = document.querySelector('#rss-load-alert');
+  const successAlert = document.querySelector('#rss-success-alert');
   const feedsRoot = document.querySelector('#feeds-list');
   const postsRoot = document.querySelector('#posts-list');
 
-  initFormView(state, { input, feedback, submitBtn, loadAlert, form });
+  initFormView(state, { input, feedback, submitBtn, loadAlert, successAlert, form });
   initListsView(state, { feedsRoot, postsRoot });
   startFeedPolling(state);
 
@@ -117,16 +119,19 @@ const mountApp = () => {
     e.preventDefault();
     state.form.errorKey = null;
     state.ui.loadErrorKey = null;
+    state.ui.successKey = null;
     state.ui.loading = true;
 
     loadFeedPayload(getRegisteredFeedUrls(state), input.value)
       .then(({ url, parsed }) => {
         mergeFeedAndPosts(state, url, parsed);
         state.ui.loadErrorKey = null;
+        state.ui.successKey = 'success.rssLoaded';
         input.value = '';
         input.focus();
       })
       .catch((err) => {
+        state.ui.successKey = null;
         if (err instanceof ValidationError) {
           const [key] = err.errors;
           state.form.errorKey = key;
