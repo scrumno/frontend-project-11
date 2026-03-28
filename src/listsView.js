@@ -39,7 +39,7 @@ const renderPosts = (state, root) => {
     titleLink.target = '_blank';
     titleLink.rel = 'noopener noreferrer';
     titleLink.className = p.read
-      ? 'fw-normal flex-grow-1 text-break text-decoration-none'
+      ? 'fw-normal flex-grow-1 text-break text-decoration-none link-secondary'
       : 'fw-bold flex-grow-1 text-break text-decoration-none';
     titleLink.textContent = p.title;
 
