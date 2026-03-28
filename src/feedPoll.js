@@ -5,7 +5,7 @@ const POLL_INTERVAL_MS = 5000
 
 const collectLinksForFeed = (state, feedId) => {
   const links = new Set()
-  state.posts.allIds.forEach(postId => {
+  state.posts.allIds.forEach((postId) => {
     const post = state.posts.byId[postId]
     if (post.feedId === feedId) {
       links.add(post.link)
@@ -24,7 +24,7 @@ export const mergePollIntoState = (state, feedId, parsed) => {
 
   const knownLinks = collectLinksForFeed(state, feedId)
 
-  parsed.items.forEach(item => {
+  parsed.items.forEach((item) => {
     if (knownLinks.has(item.link)) return
     knownLinks.add(item.link)
 
@@ -46,7 +46,7 @@ const pollOneFeed = (state, feedId) => {
   const { url } = state.feeds.byId[feedId]
   return fetchRssXml(url)
     .then(parseRssXml)
-    .then(parsed => {
+    .then((parsed) => {
       mergePollIntoState(state, feedId, parsed)
     })
     .catch(() => {
@@ -57,7 +57,7 @@ const pollOneFeed = (state, feedId) => {
 /**
  * Последовательный опрос всех фидов (без гонок по счётчику постов).
  */
-export const runPollCycle = state => {
+export const runPollCycle = (state) => {
   const ids = [...state.feeds.allIds]
   return ids.reduce(
     (chain, feedId) => chain.then(() => pollOneFeed(state, feedId)),
@@ -69,7 +69,7 @@ export const runPollCycle = state => {
  * Рекурсивный setTimeout: следующий цикл только после завершения предыдущего.
  * При медленной сети циклы не накладываются (в отличие от setInterval).
  */
-export const startFeedPolling = state => {
+export const startFeedPolling = (state) => {
   const scheduleNext = () => {
     setTimeout(() => {
       runPollCycle(state).finally(() => {

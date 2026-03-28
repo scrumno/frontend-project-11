@@ -2,13 +2,13 @@ import { Modal } from 'bootstrap'
 import i18next from 'i18next'
 import { subscribe } from 'valtio/vanilla'
 
-const clear = node => {
+const clear = (node) => {
   node.replaceChildren()
 }
 
 const renderFeeds = (state, root) => {
   clear(root)
-  state.feeds.allIds.forEach(id => {
+  state.feeds.allIds.forEach((id) => {
     const f = state.feeds.byId[id]
     const item = document.createElement('li')
     item.className = 'list-group-item'
@@ -28,7 +28,7 @@ const renderFeeds = (state, root) => {
 
 const renderPosts = (state, root) => {
   clear(root)
-  state.posts.allIds.forEach(id => {
+  state.posts.allIds.forEach((id) => {
     const p = state.posts.byId[id]
     const row = document.createElement('li')
     row.className
@@ -54,7 +54,7 @@ const renderPosts = (state, root) => {
   })
 }
 
-const syncPreviewModalChrome = modalEl => {
+const syncPreviewModalChrome = (modalEl) => {
   const readFull = modalEl.querySelector('.post-preview-read-full')
   const closeBtn = modalEl.querySelector('.post-preview-close')
   const headerClose = modalEl.querySelector('.modal-header .btn-close')
@@ -84,7 +84,7 @@ export const initListsView = (state, { feedsRoot, postsRoot }) => {
 
   const bsModal = new Modal(modalEl)
 
-  postsRoot.addEventListener('click', e => {
+  postsRoot.addEventListener('click', (e) => {
     const btn = e.target.closest('[data-post-preview]')
     if (!btn) return
     const postId = btn.dataset.postPreview

@@ -11,7 +11,7 @@ const buildSchema = feeds =>
       'no-duplicate',
       'validation.duplicate',
       value =>
-        new Promise(resolve => {
+        new Promise((resolve) => {
           resolve(!feeds.includes(value))
         }),
     )
