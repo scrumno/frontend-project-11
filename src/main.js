@@ -34,12 +34,10 @@ const mountApp = () => {
                 placeholder="${t('form.placeholder')}"
                 autocomplete="off"
                 spellcheck="false"
-                aria-describedby="rss-url-feedback"
+                aria-describedby="rss-feedback-banner"
               />
-              <div id="rss-url-feedback" class="invalid-feedback" role="alert"></div>
+              <div id="rss-feedback-banner" class="feedback mb-2" role="alert"></div>
             </div>
-            <div id="rss-success-alert" class="alert alert-success d-none mb-3" role="status"></div>
-            <div id="rss-load-alert" class="alert alert-danger d-none mb-3" role="alert"></div>
             <button type="submit" class="btn btn-primary btn-lg w-100" id="rss-submit" data-i18n="form.addButton">${t('form.addButton')}</button>
           </div>
         </form>
@@ -105,14 +103,12 @@ const mountApp = () => {
   const state = createState();
   const form = document.querySelector('#rss-form');
   const input = document.querySelector('#rss-url');
-  const feedback = document.querySelector('#rss-url-feedback');
+  const feedback = document.querySelector('#rss-feedback-banner');
   const submitBtn = document.querySelector('#rss-submit');
-  const loadAlert = document.querySelector('#rss-load-alert');
-  const successAlert = document.querySelector('#rss-success-alert');
   const feedsRoot = document.querySelector('#feeds-list');
   const postsRoot = document.querySelector('#posts-list');
 
-  initFormView(state, { input, feedback, submitBtn, loadAlert, successAlert, form });
+  initFormView(state, { input, feedback, submitBtn, form });
   initListsView(state, { feedsRoot, postsRoot });
   startFeedPolling(state);
 
