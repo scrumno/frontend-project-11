@@ -1,11 +1,21 @@
 import i18next from 'i18next';
 import { subscribeKey } from 'valtio/vanilla/utils';
 
+const syncLoadAlert = (loadErrorEl, key) => {
+  if (key) {
+    loadErrorEl.classList.remove('d-none');
+    loadErrorEl.textContent = i18next.t(key);
+  } else {
+    loadErrorEl.classList.add('d-none');
+    loadErrorEl.textContent = '';
+  }
+};
+
 /**
- * Слой View: вотчеры Valtio → классы Bootstrap и текст ошибки через i18next.
+ * Слой View: валидация формы, ошибки загрузки/парсинга, блокировка при запросе.
  */
-export const initFormView = (state, { input, feedback }) => {
-  const sync = (errorKey) => {
+export const initFormView = (state, { input, feedback, submitBtn, loadAlert, form }) => {
+  const syncValidation = (errorKey) => {
     if (errorKey) {
       input.classList.add('is-invalid');
       feedback.textContent = i18next.t(errorKey);
@@ -15,10 +25,23 @@ export const initFormView = (state, { input, feedback }) => {
     }
   };
 
-  subscribeKey(state.form, 'errorKey', sync);
-  sync(state.form.errorKey);
+  const syncLoading = (loading) => {
+    submitBtn.disabled = loading;
+    input.disabled = loading;
+    form.setAttribute('aria-busy', loading ? 'true' : 'false');
+  };
 
-  i18next.on('languageChanged', () => {
-    sync(state.form.errorKey);
-  });
+  subscribeKey(state.form, 'errorKey', syncValidation);
+  subscribeKey(state.ui, 'loadErrorKey', (key) => syncLoadAlert(loadAlert, key));
+  subscribeKey(state.ui, 'loading', syncLoading);
+
+  syncValidation(state.form.errorKey);
+  syncLoadAlert(loadAlert, state.ui.loadErrorKey);
+  syncLoading(state.ui.loading);
+
+  const onLang = () => {
+    syncValidation(state.form.errorKey);
+    syncLoadAlert(loadAlert, state.ui.loadErrorKey);
+  };
+  i18next.on('languageChanged', onLang);
 };
