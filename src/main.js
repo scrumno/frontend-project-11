@@ -53,7 +53,7 @@ const mountApp = () => {
     </div>
     <div
       class="modal fade"
-      id="post-preview-modal"
+      id="modal"
       tabindex="-1"
       aria-labelledby="post-preview-modal-label"
       aria-hidden="true"
@@ -94,7 +94,7 @@ const mountApp = () => {
     app.querySelector('[data-i18n="form.rssUrlLabel"]').textContent = t('form.rssUrlLabel');
     app.querySelector('[data-i18n="form.addButton"]').textContent = t('form.addButton');
     app.querySelector('#rss-url').placeholder = t('form.placeholder');
-    const modalCloseX = app.querySelector('#post-preview-modal .modal-header .btn-close');
+    const modalCloseX = app.querySelector('#modal .modal-header .btn-close');
     if (modalCloseX) modalCloseX.setAttribute('aria-label', t('posts.close'));
   };
 

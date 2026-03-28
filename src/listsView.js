@@ -77,7 +77,7 @@ const fillPreviewBody = (container, text) => {
 };
 
 export const initListsView = (state, { feedsRoot, postsRoot }) => {
-  const modalEl = document.getElementById('post-preview-modal');
+  const modalEl = document.getElementById('modal');
   const modalTitle = modalEl.querySelector('.modal-title');
   const modalBody = modalEl.querySelector('.post-preview-body');
   const readFull = modalEl.querySelector('.post-preview-read-full');
