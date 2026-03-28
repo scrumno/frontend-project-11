@@ -44,11 +44,11 @@ const mountApp = () => {
       </div>
       <div class="col-12 col-md-6 col-xl-5">
         <h2 class="h5 mb-3">Фиды</h2>
-        <div id="feeds-list" class="feeds list-group shadow-sm"></div>
+        <ul id="feeds-list" class="feeds list-group shadow-sm"></ul>
       </div>
       <div class="col-12 col-md-6 col-xl-5">
         <h2 class="h5 mb-3">Посты</h2>
-        <div id="posts-list" class="posts list-group shadow-sm"></div>
+        <ul id="posts-list" class="posts list-group shadow-sm"></ul>
       </div>
     </div>
     <div

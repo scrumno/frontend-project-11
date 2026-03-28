@@ -10,7 +10,7 @@ const renderFeeds = (state, root) => {
   clear(root);
   state.feeds.allIds.forEach((id) => {
     const f = state.feeds.byId[id];
-    const item = document.createElement('div');
+    const item = document.createElement('li');
     item.className = 'list-group-item';
 
     const title = document.createElement('h3');
@@ -30,7 +30,7 @@ const renderPosts = (state, root) => {
   clear(root);
   state.posts.allIds.forEach((id) => {
     const p = state.posts.byId[id];
-    const row = document.createElement('div');
+    const row = document.createElement('li');
     row.className =
       'list-group-item d-flex justify-content-between align-items-center gap-2 flex-wrap';
 
