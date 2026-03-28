@@ -34,11 +34,14 @@ const renderPosts = (state, root) => {
     row.className =
       'list-group-item d-flex justify-content-between align-items-center gap-2 flex-wrap';
 
-    const title = document.createElement('span');
-    title.className = p.read
-      ? 'fw-normal post-title flex-grow-1'
-      : 'fw-bold post-title flex-grow-1';
-    title.textContent = p.title;
+    const titleLink = document.createElement('a');
+    titleLink.href = p.link;
+    titleLink.target = '_blank';
+    titleLink.rel = 'noopener noreferrer';
+    titleLink.className = p.read
+      ? 'fw-normal flex-grow-1 text-break text-decoration-none'
+      : 'fw-bold flex-grow-1 text-break text-decoration-none';
+    titleLink.textContent = p.title;
 
     const btn = document.createElement('button');
     btn.type = 'button';
@@ -46,7 +49,7 @@ const renderPosts = (state, root) => {
     btn.textContent = i18next.t('posts.preview');
     btn.dataset.postPreview = id;
 
-    row.append(title, btn);
+    row.append(titleLink, btn);
     root.append(row);
   });
 };
